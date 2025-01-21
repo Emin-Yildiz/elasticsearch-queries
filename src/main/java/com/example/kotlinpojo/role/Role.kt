@@ -28,13 +28,13 @@ data class Role @JvmOverloads constructor(
     }
 
     class Builder {
-        private lateinit var roleName: String // Özellik adını roleName olarak değiştiriyoruz
+        private lateinit var roleName: String
         private var id: UUID = UUID.randomUUID()
         private var users: Set<User> = emptySet()
         private var audit: Audit = Audit()
 
         fun id(id: UUID) = apply { this.id = id }
-        fun name(name: String) = apply { this.roleName = name } // name parametresini roleName'e atıyoruz
+        fun name(name: String) = apply { this.roleName = name }
         fun users(users: Set<User>) = apply { this.users = users }
         fun audit(audit: Audit) = apply { this.audit = audit }
 
