@@ -1,5 +1,6 @@
 package com.example.kotlinpojo.user
 
+import com.example.kotlinpojo.domain.audit.Audit
 import jakarta.persistence.*
 import java.io.Serializable
 import java.util.UUID
@@ -13,4 +14,7 @@ data class User @JvmOverloads constructor(
     val mail: String,
     val username: String,
     val password: String,
+
+    @Embedded
+    val audit: Audit = Audit()
 ): Serializable

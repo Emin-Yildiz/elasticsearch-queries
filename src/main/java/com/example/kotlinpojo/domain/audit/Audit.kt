@@ -7,9 +7,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener
 
 import java.util.*
 
+@Embeddable
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
-open class Audit(
+data class Audit @JvmOverloads constructor(
 
     @CreatedDate
     @Column(name = "created_date", updatable = false)
