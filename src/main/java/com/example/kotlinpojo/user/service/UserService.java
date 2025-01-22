@@ -24,17 +24,17 @@ public class UserService {
         this.objectMapper = objectMapper;
     }
 
+    // TODO kendi mapper'ını yaz.
     public UserResponseModel saveUser(UserSaveRequestModel userSaveRequestModel) {
-        checkExistUserName(userSaveRequestModel.userName());
+        checkExistUserNameAndMail(userSaveRequestModel.userName(),userSaveRequestModel.mail());
         User user = objectMapper.convertValue(userSaveRequestModel, User.class);
-        return null;
+        user = userRepository.save(user);
+        return objectMapper.convertValue(user, UserResponseModel.class);
     }
 
-    private void checkExistUserName(String userName) {
-        boolean isExist = userRepository.existsUserByUsername(userName);
-        if (isExist) {
-            throw new AlreadyAvailableException("Username " + userName + " is exist");
-        }
+    private void checkExistUserNameAndMail(String userName, String mail) {
+        boolean isExist = userRepository.existsUserByUsernameOrMail(userName,mail);
+        if (isExist) throw new AlreadyAvailableException("Username " + userName + " or Mail " + mail + " is exist");
     }
 
 
