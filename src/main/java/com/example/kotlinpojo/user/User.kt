@@ -17,8 +17,37 @@ data class User @JvmOverloads constructor(
     val password: String,
 
     @ManyToOne
-    val role: Role,
+    val role: Role? = null,
 
     @Embedded
     val audit: Audit = Audit()
-): Serializable
+): Serializable {
+    class UserBuilder {
+        private var id: UUID = UUID.randomUUID()
+        private var mail: String = ""
+        private var username: String = ""
+        private var password: String = ""
+        private var role: Role? = null
+        private var audit: Audit = Audit()
+
+        fun id(id: UUID) = apply { this.id = id }
+        fun mail(mail: String) = apply { this.mail = mail }
+        fun username(username: String) = apply { this.username = username }
+        fun password(password: String) = apply { this.password = password }
+        fun role(role: Role) = apply { this.role = role }
+        fun audit(audit: Audit) = apply { this.audit = audit }
+
+        fun build(): User {
+            return User(
+                id = id,
+                mail = mail,
+                username = username,
+                password = password,
+                role = role,
+                audit = audit
+            )
+        }
+    }
+}
+
+
