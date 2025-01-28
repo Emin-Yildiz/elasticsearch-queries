@@ -2,6 +2,7 @@ package com.example.kotlinpojo.role
 
 import com.example.kotlinpojo.domain.audit.Audit
 import com.example.kotlinpojo.user.User
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import java.io.Serializable
 import java.util.*
@@ -15,6 +16,7 @@ data class Role @JvmOverloads constructor(
     val name: String,
 
     @OneToMany(mappedBy = "role", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @JsonIgnore
     val users: Set<User> = emptySet(),
 
     @Embedded
