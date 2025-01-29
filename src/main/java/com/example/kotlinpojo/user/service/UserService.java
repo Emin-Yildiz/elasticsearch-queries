@@ -13,13 +13,17 @@ import com.example.kotlinpojo.user.model.response.UserResponseModel;
 import com.example.kotlinpojo.user.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
@@ -94,7 +98,15 @@ public class UserService {
     }
 
     public User findUserById(UUID userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new NotAvailableException(String.format("User Not Found. ID: %s",userId)));
+        return userRepository.findById(userId).orElseThrow(() -> new NotAvailableException(String.format("User Not Found. ID: %s", userId)));
+    }
+
+    public User findUserByUserName(String userName) {
+        return userRepository.findByUsername(userName).orElseThrow(() -> new NotAvailableException(String.format("User Not Found. Username: %s", userName)));
+    }
+
+    public User findUserByMail(String mail) {
+        return userRepository.findByMail(mail).orElseThrow(() -> new NotAvailableException(String.format("User Not Found. Mail: %s", mail)));
     }
 
     private void checkExistUserNameAndMail(String userName, String mail) {
@@ -102,5 +114,15 @@ public class UserService {
         if (isExist) throw new AlreadyAvailableException("Username '" + userName + "' or Mail '" + mail + "' is exist");
     }
 
+
+    @Override
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        User user = findUserByUserName(userName);
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                new ArrayList<>()
+        );
+    }
 
 }

@@ -5,6 +5,7 @@ import com.example.kotlinpojo.user.model.request.UserSaveRequestModel;
 import com.example.kotlinpojo.user.model.request.UserUpdateRequestModel;
 import com.example.kotlinpojo.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "api/v1/users")
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
 
     private final UserService userService;
@@ -23,6 +25,7 @@ public class UserController {
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "User Save Endpoint")
+    //@PreAuthorize("hasRole('SUPER_ADMIN') or hasRole('ADMIN')")
     public Response<Object> saveUser(@RequestBody UserSaveRequestModel userSaveRequestModel) {
         return new Response<>("User Save Success",userService.saveUser(userSaveRequestModel));
     }
