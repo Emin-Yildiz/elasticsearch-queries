@@ -1,0 +1,159 @@
+{
+	"info": {
+		"_postman_id": "48751b78-900c-4ac8-80b0-a78b92da070f",
+		"name": "My Elastic CDC Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28990765"
+	},
+	"item": [
+		{
+			"name": "Connector Requests",
+			"item": [
+				{
+					"name": "Postgre To Debezium Connector",
+					"item": [
+						{
+							"name": "Get Connectors",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8089/connectors",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8089",
+									"path": [
+										"connectors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create User Connector",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"user-db-connector\",\r\n  \"config\": {\r\n    \"connector.class\": \"io.debezium.connector.postgresql.PostgresConnector\",\r\n    \"tasks.max\": \"1\",\r\n    \"database.history.kafka.bootstrap.servers\": \"kafka:29092\",\r\n    \"database.history.kafka.topic\": \"schema-changes.user\",\r\n    \"database.hostname\": \"postgres-service\",\r\n    \"database.port\": \"5432\",\r\n    \"database.user\": \"root\",\r\n    \"database.password\": \"root\",\r\n    \"database.dbname\": \"db\",\r\n    \"database.server.name\": \"users\",\r\n    \"table.include.list\": \"public.users,public.roles\",\r\n    \"key.converter.schemas.enable\": \"false\",\r\n    \"value.converter.schemas.enable\": \"false\",\r\n    \"key.converter\": \"org.apache.kafka.connect.json.JsonConverter\",\r\n    \"value.converter\": \"org.apache.kafka.connect.json.JsonConverter\",\r\n    \"plugin.name\": \"pgoutput\",\r\n    \"slot.name\": \"pdf_slot\",\r\n    \"topic.prefix\": \"example\",\r\n    \"decimal.handling.mode\": \"double\",\r\n    \"tombstone.on.delete\": \"true\",\r\n    \"time.precision.mode\": \"connect\"\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8089/connectors",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8089",
+									"path": [
+										"connectors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Connector",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8089/connectors/{connector-name}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8089",
+									"path": [
+										"connectors",
+										"{connector-name}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Debezium To Elastic Connector",
+					"item": [
+						{
+							"name": "Get Kafka Connector Endpoint",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8070/connectors",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8070",
+									"path": [
+										"connectors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Kafla To Elastic Connector",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"elasticsearch-sink\",\r\n  \"config\": {\r\n    \"connector.class\": \"io.confluent.connect.elasticsearch.ElasticsearchSinkConnector\",\r\n    \"tasks.max\": \"1\",\r\n    \"topics\": \"users.public.roles,users.public.users\",\r\n    \"key.ignore\": \"false\",\r\n    \"schema.ignore\": \"true\",\r\n    \"connection.url\": \"http://elasticsearch:9200\",\r\n    \"type.name\": \"_doc\",\r\n    \"name\": \"elasticsearch-sink\",\r\n    \"value.converter\": \"org.apache.kafka.connect.json.JsonConverter\",\r\n    \"value.converter.schemas.enable\": \"false\",\r\n    \"behavior.on.null.values\": \"delete\",\r\n    \"transforms\": \"TimestampConverter\",\r\n    \"transforms.TimestampConverter.type\": \"org.apache.kafka.connect.transforms.TimestampConverter$Value\",\r\n    \"transforms.TimestampConverter.field\": \"timestamp_field\",\r\n    \"transforms.TimestampConverter.target.type\": \"Timestamp\",\r\n    \"transforms.TimestampConverter.format\": \"yyyy-MM-dd'T'HH:mm:ss.SSSZ\" \r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8070/connectors",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8070",
+									"path": [
+										"connectors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Kafka Connector",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8070/connectors/{connector-name}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8070",
+									"path": [
+										"connectors",
+										"{connector-name}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
