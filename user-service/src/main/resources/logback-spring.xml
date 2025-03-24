@@ -12,7 +12,7 @@
                 <pattern>
                     <pattern>
                         {
-                        "app": "sink-example"
+                        "app": "user-service"
                         }
                     </pattern>
                 </pattern>
