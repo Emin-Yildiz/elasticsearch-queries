@@ -7,8 +7,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
-        <module name="eureka-server" />
         <module name="user-service" />
+        <module name="eureka-server" />
+        <module name="search-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -20,6 +21,7 @@
       <module name="api-gateway" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
       <module name="kotlinpojo" options="-parameters" />
+      <module name="search-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
   </component>
