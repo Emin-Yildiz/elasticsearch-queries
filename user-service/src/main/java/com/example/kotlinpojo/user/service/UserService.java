@@ -1,6 +1,5 @@
 package com.example.kotlinpojo.user.service;
 
-import com.example.kotlinpojo.domain.audit.Audit;
 import com.example.kotlinpojo.domain.exception.exceptions.AlreadyAvailableException;
 import com.example.kotlinpojo.domain.exception.exceptions.NotAvailableException;
 import com.example.kotlinpojo.role.Role;
@@ -54,20 +53,18 @@ public class UserService implements UserDetailsService {
         User user = findUserById(userId);
         checkExistUserNameAndMail(userUpdateRequestModel.userName(),userUpdateRequestModel.mail());
         Role role = userUpdateRequestModel.roleId() == null ? user.getRole() : roleService.getRoleById(userUpdateRequestModel.roleId());
-
-        user = user.copy(
-                user.getId(),
-                userUpdateRequestModel.mail(),
-                userUpdateRequestModel.userName(),
-                user.getPassword(),
-                role,
-                user.getAudit()
-                );
-
+        updateUserField(user,userUpdateRequestModel);
+        user.setRole(role);
         user = userRepository.save(user);
         LOGGER.info("[Update User Service] User Update Completed. Username: {}", userUpdateRequestModel.userName());
 
         return userMapper.userToUserResponseModel(user);
+    }
+
+    private void updateUserField(User user, UserUpdateRequestModel userUpdateRequestModel) {
+        user.setMail(userUpdateRequestModel.mail());
+        user.setPassword(userUpdateRequestModel.password());
+        user.setUsername(userUpdateRequestModel.userName());
     }
 
     public List<User> getUserList(){
@@ -77,22 +74,7 @@ public class UserService implements UserDetailsService {
     public void deleteUser(UUID userId) {
         LOGGER.info("[Delete User Service] User Delete Started. UserId: {}", userId);
         User user = findUserById(userId);
-        Audit userAudit = user.getAudit();
-
-        userAudit = userAudit.copy(
-                userAudit.getCreationDate(),
-                userAudit.getLastModifiedDate(),
-                false);
-
-        user = user.copy(
-                user.getId(),
-                user.getMail(),
-                user.getUsername(),
-                user.getPassword(),
-                user.getRole(),
-                userAudit
-        );
-
+        user.setIsActive(Boolean.FALSE);
         userRepository.save(user);
         LOGGER.info("[Delete User Service] User Delete Completed. UserId: {}", userId);
     }

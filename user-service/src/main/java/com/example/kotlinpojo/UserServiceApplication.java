@@ -24,12 +24,12 @@ public class UserServiceApplication {
 	@Bean
 	public ApplicationRunner runner(PasswordEncoder passwordEncoder, UserRepository userRepository, RoleRepository roleRepository) {
 		return args -> {
-			Role adminRole = Role.builder().name("ROLE_ADMIN").build();
+			Role adminRole = new Role.Builder().name("ROLE_ADMIN").build();
 			if (roleRepository.count() == 0){
 				adminRole = roleRepository.save(adminRole);
 			}
 			if (userRepository.count() == 0) {
-				User user = new User(UUID.randomUUID(),"admin@admin.com","admin",passwordEncoder.encode("admin"),adminRole);
+				User user = new User("admin@admin.com","admin",passwordEncoder.encode("admin"),adminRole);
 				userRepository.save(user);
 			}
 		};

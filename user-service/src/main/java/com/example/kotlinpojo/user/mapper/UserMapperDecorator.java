@@ -10,7 +10,7 @@ public class UserMapperDecorator implements UserMapper {
 
     @Override
     public User userSaveRequestModelToUser(UserSaveRequestModel userSaveRequestModel) {
-        return new User.UserBuilder()
+        return new User.Builder()
                 .mail(userSaveRequestModel.mail())
                 .username(userSaveRequestModel.userName())
                 .password(userSaveRequestModel.password())
