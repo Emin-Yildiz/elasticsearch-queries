@@ -1,4 +1,4 @@
-package com.civ.gatewayservice.filter;
+package com.example.gatewayservice.filter;
 
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;

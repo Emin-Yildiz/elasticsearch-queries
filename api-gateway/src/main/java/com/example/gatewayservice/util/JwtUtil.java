@@ -1,6 +1,6 @@
-package com.civ.gatewayservice.util;
+package com.example.gatewayservice.util;
 
-import com.civ.gatewayservice.model.JwtBody;
+import com.example.gatewayservice.model.JwtBody;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -11,9 +11,6 @@ import org.springframework.http.HttpHeaders;
 
 
 import java.security.Key;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 public class JwtUtil {

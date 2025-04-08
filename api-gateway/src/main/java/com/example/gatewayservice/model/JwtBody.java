@@ -1,4 +1,4 @@
-package com.civ.gatewayservice.model;
+package com.example.gatewayservice.model;
 
 public class JwtBody {
     private String userId;

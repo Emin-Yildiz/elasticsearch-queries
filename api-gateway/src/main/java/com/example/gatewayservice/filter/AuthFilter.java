@@ -1,6 +1,6 @@
-package com.civ.gatewayservice.filter;
+package com.example.gatewayservice.filter;
 
-import com.civ.gatewayservice.util.JwtUtil;
+import com.example.gatewayservice.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilter;

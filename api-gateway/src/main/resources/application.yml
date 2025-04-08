@@ -11,6 +11,29 @@ eureka:
     service-url:
       defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka
 
+# ACTUATOR
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+  endpoints:
+    web:
+      exposure:
+        exclude: "*"
+      cors:
+        allowed-methods: GET,POST
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
 # Jwt Key
 jwt:
   secret:
