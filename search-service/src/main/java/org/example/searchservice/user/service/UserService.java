@@ -1,5 +1,6 @@
 package org.example.searchservice.user.service;
 
+import org.example.searchservice.domain.annotation.LogExecutionTime;
 import org.example.searchservice.domain.exception.exception.NotAvailableException;
 import org.example.searchservice.user.User;
 import org.example.searchservice.user.repository.UserRepository;
@@ -20,6 +21,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @LogExecutionTime
     public User getUserById(UUID id) {
         return userRepository.findUserById(id).orElseThrow(() -> new NotAvailableException(String.format("User Not Found. Id: %s", id)));
     }
