@@ -36,13 +36,25 @@ public class LoggingInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object object, Exception exception){
         String ipAddress = getClientIp(request);
-        String message = response.getStatus() == 200 ? "Request is complete" : "Request is failed";
-        logger.info("[After Completion] Request IP: {} | URI: {} | Method: {} | Status: {} | Message: {}",
-                ipAddress,
-                request.getRequestURI(),
-                request.getMethod(),
-                response.getStatus(),
-                message);
+        String message = response.getStatus() >= 400 ? "Request is failed" : "Request is complete";;
+
+        if (exception != null) {
+            String errorMessage = exception.getMessage() != null ? exception.getMessage() : "Unknown error";
+            logger.info("[After Completion] Request IP: {} | URI: {} | Method: {} | Status: {} | Error Message: {}",
+                    ipAddress,
+                    request.getRequestURI(),
+                    request.getMethod(),
+                    response.getStatus(),
+                    errorMessage);
+        }else{
+            logger.info("[After Completion] Request IP: {} | URI: {} | Method: {} | Status: {} | Message: {}",
+                    ipAddress,
+                    request.getRequestURI(),
+                    request.getMethod(),
+                    response.getStatus(),
+                    message);
+        }
+
     }
 
     public String getClientIp(HttpServletRequest request) {
