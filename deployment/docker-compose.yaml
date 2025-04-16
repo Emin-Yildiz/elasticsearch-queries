@@ -36,6 +36,21 @@ services:
     environment:
       ELASTICSEARCH_URL: http://elasticsearch:9200
       ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+      xpack.encryptedSavedObjects.encryptionKey: "12345678901234567890123456789012"
+    volumes:
+      - ./data/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    depends_on:
+      - elasticsearch
+    networks:
+      - elastic
+
+  elastalert:
+    image: jertel/elastalert2
+    container_name: elastalert
+    volumes:
+      - ./data/elastalert/config:/opt/elastalert/config
+      - ./data/elastalert/rules:/opt/elastalert/rules
+    command: --verbose
     depends_on:
       - elasticsearch
     networks:

@@ -26,7 +26,7 @@
         </encoder>
     </appender>
 
-    <!-- Varsayılan log seviyesi info olarak ayarlanmış. Yani INFO, WARN, ERROR seviyesindeki tüm loglar hem konsola, hem Logstash'a hem de Sentry'e gönderilecek. -->l
+    <!-- Varsayılan log seviyesi info olarak ayarlanmış. Yani INFO, WARN, ERROR seviyesindeki tüm loglar hem konsola, hem Logstash'a hem de Sentry'e gönderilecek. -->
     <root level="info">
         <appender-ref ref="logstash" />
     </root>

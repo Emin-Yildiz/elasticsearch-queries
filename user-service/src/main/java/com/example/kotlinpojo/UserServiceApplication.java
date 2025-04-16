@@ -11,8 +11,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.UUID;
-
 @SpringBootApplication
 @EnableDiscoveryClient
 public class UserServiceApplication {

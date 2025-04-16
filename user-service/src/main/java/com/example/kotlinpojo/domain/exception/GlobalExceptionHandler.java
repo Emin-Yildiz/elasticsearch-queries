@@ -4,6 +4,7 @@ import com.example.kotlinpojo.domain.exception.exceptions.AlreadyAvailableExcept
 import com.example.kotlinpojo.domain.exception.exceptions.BadRequestException;
 import com.example.kotlinpojo.domain.exception.exceptions.NotAvailableException;
 import com.example.kotlinpojo.domain.response.ErrorResponse;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
+@Hidden
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(NotAvailableException.class) // Bulunamadı : 404

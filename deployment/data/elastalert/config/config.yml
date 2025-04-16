@@ -1,0 +1,26 @@
+# Elasticsearch'in host adı — genellikle Docker servis adıdır
+es_host: elasticsearch
+
+# Elasticsearch servisi için bağlantı noktası (port)
+es_port: 9200
+
+# ElastAlert’in kendi loglarını ve uyarı durumlarını yazacağı özel index
+writeback_index: elastalert_status
+
+# Her çalışmada, geçmiş kaç dakikalık log'a bakılacağını belirler
+# Örneğin: 1 dakika geriye dönük tarama yapar
+buffer_time:
+  minutes: 1
+
+# Kuralların ne sıklıkla çalıştırılacağını belirler
+# Örneğin: her 1 dakikada bir tüm kurallar tetiklenir
+run_every:
+  minutes: 1
+
+# Maksimum ne kadar eski veriler için alert gönderilsin
+# Örneğin: 1 günden daha eski loglar uyarı oluşturmaz
+alert_time_limit:
+  days: 1
+
+# Kural dosyalarının bulunduğu dizin — her dosya bir uyarı kuralını temsil eder
+rules_folder: /opt/elastalert/rules
