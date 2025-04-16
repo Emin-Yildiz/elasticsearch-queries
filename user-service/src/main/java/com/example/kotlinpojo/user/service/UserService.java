@@ -1,7 +1,11 @@
 package com.example.kotlinpojo.user.service;
 
+import com.example.global.kafka.NotificationSendEvent;
+import com.example.global.kafka.NotificationType;
+import com.example.kotlinpojo.config.KafkaConfig;
 import com.example.kotlinpojo.domain.exception.exceptions.AlreadyAvailableException;
 import com.example.kotlinpojo.domain.exception.exceptions.NotAvailableException;
+import com.example.kotlinpojo.kafka.producer.MessageProducer;
 import com.example.kotlinpojo.role.Role;
 import com.example.kotlinpojo.role.service.RoleService;
 import com.example.kotlinpojo.user.User;
@@ -17,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -32,10 +37,13 @@ public class UserService implements UserDetailsService {
 
     private final RoleService roleService;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper, RoleService roleService) {
+    private final MessageProducer messageProducer;
+
+    public UserService(UserRepository userRepository, UserMapper userMapper, RoleService roleService, MessageProducer messageProducer) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.roleService = roleService;
+        this.messageProducer = messageProducer;
     }
 
     public UserResponseModel saveUser(UserSaveRequestModel userSaveRequestModel) {
@@ -44,6 +52,13 @@ public class UserService implements UserDetailsService {
         User user = userMapper.userSaveRequestModelToUser(userSaveRequestModel);
         user = userRepository.save(user);
         LOGGER.info("[Save User Service] User Save Completed. Username: {}", userSaveRequestModel.userName());
+        sendMessageToKafka(KafkaConfig.NOTIFICATION_SEND_TOPIC,new NotificationSendEvent(
+                user.getMail(),
+                "User Created",
+                "your user has been created please login to the system",
+                NotificationType.MAIL,
+                LocalDateTime.now()
+                ));
         return userMapper.userToUserResponseModel(user);
     }
 
@@ -105,6 +120,10 @@ public class UserService implements UserDetailsService {
                 user.getPassword(),
                 new ArrayList<>()
         );
+    }
+
+    private void sendMessageToKafka(String topicName, NotificationSendEvent notificationSendEvent){
+        messageProducer.produceNotificationSendEvent(topicName, notificationSendEvent);
     }
 
 }
