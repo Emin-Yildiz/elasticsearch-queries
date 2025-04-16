@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>localhost:5000</destination>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <mdc />
+                <context />
+                <logLevel />
+                <loggerName />
+                <pattern>
+                    <pattern>
+                        {
+                        "app": "notification-service"
+                        }
+                    </pattern>
+                </pattern>
+                <threadName />
+                <message />
+                <logstashMarkers />
+                <stackTrace />
+            </providers>
+        </encoder>
+    </appender>
+
+    <!-- Varsayılan log seviyesi info olarak ayarlanmış. Yani INFO, WARN, ERROR seviyesindeki tüm loglar hem konsola, hem Logstash'a hem de Sentry'e gönderilecek. -->
+    <root level="info">
+        <appender-ref ref="logstash" />
+    </root>
+
+    <!--
+        Bu üç paket için log seviyesi WARN yapılmış. Böylece gereksiz INFO loglar bastırılır.
+        <logger name="org.springframework" level="WARN"/>
+        <logger name="org.hibernate" level="WARN"/>
+        <logger name="io.opentelemetry" level="WARN"/>
+    -->
+
+</configuration>
