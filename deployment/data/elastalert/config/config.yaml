@@ -1,0 +1,32 @@
+# config.yaml
+
+# Elasticsearch bağlantı ayarları
+es_host: elasticsearch
+es_port: 9200
+es_index: elastalert_status_index
+
+run_every:
+  minutes: 1
+
+buffer_time:
+  minutes: 15
+
+
+# Writeback index (Eğer elastalert durumlarını Elasticsearch'e kaydetmek istiyorsanız)
+writeback_index: elastalert_status
+
+# Alert ayarları (Slack ya da e-posta gibi uyarılar)
+alert_time_limit:
+  days: 2 # Uyarıların sadece son 2 gün için geçerli olmasını sağlar
+
+
+# Kuralların bulunduğu klasör
+rules_folder: "/opt/elastalert/rules"
+
+# SMTP (E-posta) ayarları
+smtp_host: smtp.gmail.com
+smtp_port: 587
+smtp_ssl: false
+smtp_tls: true
+from_addr: eminyildiz122@gmail.com
+smtp_auth_file: /opt/elastalert/smtp_auth.yaml

@@ -17,7 +17,7 @@ services:
       - elastic
 
   elasticsearch:
-    image: elasticsearch:8.16.2
+    image: elasticsearch:8.17.1
     container_name: elasticsearch
     env_file:
       - .env
@@ -48,9 +48,9 @@ services:
     image: jertel/elastalert2
     container_name: elastalert
     volumes:
-      - ./data/elastalert/config:/opt/elastalert/config
+      - ./data/elastalert/config/config.yaml:/opt/elastalert/config.yaml
       - ./data/elastalert/rules:/opt/elastalert/rules
-    command: --verbose
+      - ./data/elastalert/config/smtp_auth.yaml:/opt/elastalert/smtp_auth.yaml
     depends_on:
       - elasticsearch
     networks:

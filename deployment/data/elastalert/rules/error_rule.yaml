@@ -1,0 +1,46 @@
+name: "User - Error Alert"
+type: frequency
+index: "user-*"
+is_enabled: true
+
+
+num_events: 1
+timeframe:
+  minutes: 5
+
+filter:
+  - bool:
+      should:
+        - match:
+            level: "ERROR"
+        - match:
+            log.level: "ERROR"
+
+alert:
+  - "email"
+
+email:
+  - "ayseakbb58@gmail.com"
+
+email_format: html
+alert_text_type: alert_text_only
+alert_text_args:
+  - starttime
+  - endtime
+  - num_matches
+  - log.level
+  - log.logger_name
+  - log.service
+  - num_matches # 'count' yerine kullanılabilir
+  - log.message
+
+realert:
+  minutes: 0
+
+aggregation:
+  minutes: 1
+
+summary_table_fields:
+  - log.level
+  - log.logger_name
+  - log.service
